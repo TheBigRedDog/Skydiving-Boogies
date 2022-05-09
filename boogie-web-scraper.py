@@ -102,6 +102,23 @@ def parse_boogie_dates(boogie_soup_object, boogie_info):
         boogie_info['start_date'] = None
         boogie_info['end_date'] = None
 
+def parse_boogie_description(boogie_soup_object, boogie_info):
+    boogie_description_parent = boogie_soup_object.find(class_='col-sm-8')
+    if boogie_description_parent != None:
+        boogie_description = boogie_description_parent\
+            .p.text.strip().replace('\n\n', ' ').replace('\n', ' ')
+        if boogie_description == 'Boogie':    # checks for lack of description 
+            boogie_description = None 
+        boogie_info['description'] = boogie_description
+        print(boogie_description)
+
+    else:
+        boogie_info['description'] = None
+
+boogies_df = pd.DataFrame(columns = ['name', 'start_date', 'end_date'\
+                                     'dropzone', 'location', 'main_contact'\
+                                     'phone_number', 'email', 'link'
+                                     'description'])
 for boogie in boogies:
     boogie_info = {}
     boogie_html = boogie.get_attribute('outerHTML')
@@ -115,7 +132,11 @@ for boogie in boogies:
     parse_boogie_phone_number(boogie_soup, boogie_info)
     parse_boogie_email(boogie_soup, boogie_info)
     parse_boogie_link(boogie_soup, boogie_info)
-    print(boogie_info)
+    parse_boogie_description(boogie_soup, boogie_info)
+
+    # print(boogie_info)
+
+    boogies
 
     
   
