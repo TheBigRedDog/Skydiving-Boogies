@@ -59,9 +59,9 @@ def parse_boogie_phone_number(boogie_soup_object, boogie_info):
     if boogie_phone_number_sibling != None:
         boogie_phone_number = boogie_phone_number_sibling\
             .next_sibling.next_sibling.text.strip()
-        boogie_info['boogie_phone_number'] = boogie_phone_number
+        boogie_info['phone_number'] = boogie_phone_number
     else:
-        boogie_info['boogie_phone_number'] = None
+        boogie_info['phone_number'] = None
     
 def parse_boogie_email(boogie_soup_object, boogie_info):
     boogie_email_sibling = boogie_soup_object.find(class_='col-sm-4').find(class_='fa fa-envelope')
@@ -110,15 +110,14 @@ def parse_boogie_description(boogie_soup_object, boogie_info):
         if boogie_description == 'Boogie':    # checks for lack of description 
             boogie_description = None 
         boogie_info['description'] = boogie_description
-        print(boogie_description)
-
     else:
         boogie_info['description'] = None
 
-boogies_df = pd.DataFrame(columns = ['name', 'start_date', 'end_date'\
-                                     'dropzone', 'location', 'main_contact'\
-                                     'phone_number', 'email', 'link'
-                                     'description'])
+boogies_df = pd.DataFrame(columns = ['name', 'start_date', 'end_date',\
+                                     'dropzone', 'city', 'state',\
+                                     'main_contact', 'phone_number', 'email',\
+                                     'link', 'description'])
+
 for boogie in boogies:
     boogie_info = {}
     boogie_html = boogie.get_attribute('outerHTML')
@@ -134,9 +133,12 @@ for boogie in boogies:
     parse_boogie_link(boogie_soup, boogie_info)
     parse_boogie_description(boogie_soup, boogie_info)
 
-    # print(boogie_info)
+    boogie_df = pd.DataFrame(data=boogie_info, index=[0])
 
-    boogies
+    boogies_df = pd.concat([boogies_df, boogie_df], ignore_index=True)
+
+with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
+    print(boogies_df)
 
     
   
