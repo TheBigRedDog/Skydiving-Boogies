@@ -38,10 +38,11 @@ def parse_boogie_contact_info(boogie_soup_object, boogie_info):
     if boogie_phone_number != None:
         boogie_phone_number = boogie_phone_number\
             .next_sibling.next_sibling.text.strip()
-    # TODO: implement scraping for email and event page link
-    # boogie_email= boogie_contact_info.find(class_='fa fa-envelope')\
-    #     .next_sibling.next_sibling.text.strip()
-    # print(boogie_email)
+    boogie_email = boogie_contact_info.find(class_='fa fa-envelope')\
+        .next_sibling.next_sibling.text.strip()
+    boogie_link = boogie_contact_info.find(class_='fa fa-external-link')\
+        .next_sibling.next_sibling.text.strip()
+    print(boogie_link)
     # for child in boogie_contact_info.children:
     #     if len(child.find_all)
     #     text = child.text.strip()
