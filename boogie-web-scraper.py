@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import html5lib
 import time 
+
 DRIVER_PATH = '/usr/lib/chromium-browser/chromedriver'
 options = Options()
 options.headless = True
@@ -29,7 +30,12 @@ for boogie in boogies:
     boogie_html = boogie.get_attribute('outerHTML')
     boogie_soup = BeautifulSoup(boogie_html, 'html5lib')
 
-    boogie_name = boogie_soup.find(class_='col-sm-7').contents[1].text
+    boogie_name = boogie_soup.find(class_='col-sm-7').contents[1].text.strip()
+    boogie_dates = boogie_soup.find(class_='col-sm-5')\
+        .contents[1].contents[1].contents[2]\
+        .text.strip().replace("\n", "").split(' - ')
+    
+    print(boogie_dates)
     
 
 
